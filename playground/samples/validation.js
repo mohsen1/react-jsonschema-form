@@ -2,7 +2,7 @@ function validate({pass1, pass2}) {
   if (pass1 !== pass2) {
     return {
       pass2: {
-        errors: ["Passwords don't match"]
+        __errors: ["Passwords don't match"]
       }
     };
   }

@@ -616,11 +616,11 @@ describe("utils", () => {
       expect(toErrorList({
         a: {
           b: {
-            errors: ["err1", "err2"]
+            __errors: ["err1", "err2"]
           }
         },
         c: {
-          errors: ["err3"]
+          __errors: ["err3"]
         }
       })).eql([
         {stack: "b err1"},

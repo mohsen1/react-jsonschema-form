@@ -586,7 +586,7 @@ describe("Form", () => {
           })
             .then(() => {
               expect(comp.state.errorSchema).eql({
-                errors: ["does not meet minimum length of 8"]
+                __errors: ["does not meet minimum length of 8"]
               });
             });
         });
@@ -622,7 +622,7 @@ describe("Form", () => {
           .then(() => SimulateAsync().submit(node))
           .then(() => {
             expect(comp.state.errorSchema).eql({
-              errors: ["does not meet minimum length of 8"]
+              __errors: ["does not meet minimum length of 8"]
             });
           });
       });
@@ -658,7 +658,7 @@ describe("Form", () => {
         const {comp} = createFormComponent(formProps);
 
         expect(comp.state.errorSchema).eql({
-          errors: ["does not meet minimum length of 8"]
+          __errors: ["does not meet minimum length of 8"]
         });
       });
 
@@ -686,7 +686,7 @@ describe("Form", () => {
       it("should reflect the contextualized error in state", () => {
         const {comp} = createFormComponent(formProps);
         expect(comp.state.errorSchema).eql({
-          errors: [
+          __errors: [
             "does not meet minimum length of 8",
             `does not match pattern "\d+"`
           ]
@@ -738,7 +738,7 @@ describe("Form", () => {
         expect(comp.state.errorSchema).eql({
           level1: {
             level2: {
-              errors: ["does not meet minimum length of 8"]
+              __errors: ["does not meet minimum length of 8"]
             }
           }
         });
@@ -776,7 +776,7 @@ describe("Form", () => {
 
         expect(comp.state.errorSchema)
           .eql({
-            1: {errors: ["does not meet minimum length of 4"]}
+            1: {__errors: ["does not meet minimum length of 4"]}
           });
       });
 
@@ -825,8 +825,8 @@ describe("Form", () => {
 
         expect(comp.state.errorSchema).eql({
           level1: {
-            1: {errors: ["does not meet minimum length of 4"]},
-            3: {errors: ["does not meet minimum length of 4"]},
+            1: {__errors: ["does not meet minimum length of 4"]},
+            3: {__errors: ["does not meet minimum length of 4"]},
           }
         });
       });
@@ -876,10 +876,10 @@ describe("Form", () => {
         expect(comp.state.errorSchema).eql({
           outer: {
             0: {
-              1: {errors: ["does not meet minimum length of 4"]}
+              1: {__errors: ["does not meet minimum length of 4"]}
             },
             1: {
-              0: {errors: ["does not meet minimum length of 4"]}
+              0: {__errors: ["does not meet minimum length of 4"]}
             }
           }
         });
@@ -931,7 +931,7 @@ describe("Form", () => {
         expect(comp.state.errorSchema).eql({
           1: {
             foo: {
-              errors: ["does not meet minimum length of 4"]
+              __errors: ["does not meet minimum length of 4"]
             }
           }
         });
@@ -971,7 +971,7 @@ describe("Form", () => {
         if (pass1 !== pass2) {
           return {
             pass2: {
-              errors: ["Passwords don't match"]
+              __errors: ["Passwords don't match"]
             }
           };
         }
@@ -984,7 +984,7 @@ describe("Form", () => {
 
       expect(comp.state.errorSchema).eql({
         pass2: {
-          errors: [
+          __errors: [
             "does not meet minimum length of 3",
             "Passwords don't match",
           ]

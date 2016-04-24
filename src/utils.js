@@ -266,8 +266,8 @@ function errorPropertyToPath(property) {
 export function toErrorList(errorSchema) {
   return Object.keys(errorSchema).reduce((acc, key) => {
     const field = errorSchema[key];
-    if ("errors" in field) {
-      acc = acc.concat(field.errors.map(stack => ({stack: `${key} ${stack}`})));
+    if ("__errors" in field) {
+      acc = acc.concat(field.__errors.map(stack => ({stack: `${key} ${stack}`})));
     } else if (isObject(field)) {
       acc = acc.concat(toErrorList(field));
     }
@@ -304,10 +304,10 @@ export function toErrorSchema(errors) {
       }
       parent = parent[segment];
     }
-    if (Array.isArray(parent.errors)) {
-      parent.errors = parent.errors.concat(message);
+    if (Array.isArray(parent.__errors)) {
+      parent.__errors = parent.__errors.concat(message);
     } else {
-      parent.errors = [message];
+      parent.__errors = [message];
     }
     return errorSchema;
   }, {});
