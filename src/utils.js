@@ -333,6 +333,51 @@ export function toIdSchema(schema, id, definitions) {
   return idSchema;
 }
 
+export function userValidate(validate, formData, schema, errorSchema) {
+  function wrapFormDataValue(value) {
+    return {
+      __errors: [],
+      getValue() {
+        return value;
+      },
+      addError(message) {
+        this.__errors.push(message);
+      },
+    };
+  }
+
+  function wrapFormData(formData) {
+    if (!isObject(formData)) {
+      return wrapFormDataValue(formData);
+    }
+    return Object.keys(formData).reduce((acc, key) => {
+      return {...acc, [key]: wrapFormDataValue(formData[key])};
+    }, {}); 
+  }
+
+  function extractWrappedErrors(wrappedFormData) {
+    // if (!isObject(wrappedFormData)) {
+    //   return {__errors: wrappedFormData.__errors};
+    // }
+    return Object.keys(wrappedFormData).reduce((acc, key) => {
+      if (key === "addError" || key === "getValue") {
+        return acc;
+      } else if (key === "__errors") {
+        return {...acc, [key]: wrappedFormData[key]};
+      }
+      return {...acc, [key]: extractWrappedErrors(wrappedFormData[key])};
+    }, {}); 
+  }
+
+  const wrappedFormData = wrapFormData(formData);
+
+  validate(wrappedFormData, schema);
+
+  const newErrorSchema = mergeObjects(errorSchema, extractWrappedErrors(wrappedFormData), true);
+  const newErrors = toErrorList(newErrorSchema);
+  return {errors: newErrors, errorSchema: newErrorSchema};
+} 
+
 export function parseDateString(dateString, includeTime = true) {
   if (!dateString) {
     return {

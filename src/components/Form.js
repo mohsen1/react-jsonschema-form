@@ -8,9 +8,8 @@ import {
   getDefaultFormState,
   shouldRender,
   toErrorSchema,
-  toErrorList,
   toIdSchema,
-  mergeObjects
+  userValidate
 } from "../utils";
 
 
@@ -52,10 +51,7 @@ export default class Form extends Component {
     const {errors} = jsonValidate(formData, schema || this.props.schema);
     const errorSchema = toErrorSchema(errors);
     if (typeof validate === "function") {
-      const customErrorSchema = validate(formData);
-      const newErrorSchema = mergeObjects(errorSchema, customErrorSchema, true);
-      const newErrors = toErrorList(newErrorSchema);
-      return {errors: newErrors, errorSchema: newErrorSchema};
+      return userValidate(validate, formData, schema, errorSchema);
     }
     return {errors, errorSchema};
   }
