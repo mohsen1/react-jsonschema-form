@@ -1,12 +1,7 @@
 function validate({pass1, pass2}) {
-  if (pass1 !== pass2) {
-    return {
-      pass2: {
-        __errors: ["Passwords don't match"]
-      }
-    };
+  if (pass1.getValue() !== pass2.getValue()) {
+    pass2.addError("Passwords don't match.");
   }
-  return {};
 }
 
 module.exports = {
